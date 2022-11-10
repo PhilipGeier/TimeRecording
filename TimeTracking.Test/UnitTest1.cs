@@ -3,10 +3,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace TimeTracking.Test;
 
 [TestClass]
-public class UnitTest1
+public class TimeRecordingTests
 {
     [TestMethod]
-    public void TestMethod1()
+    public void Test()
     {
+        
     }
 }
