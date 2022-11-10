@@ -24,7 +24,7 @@ public class TimeRecordingService : ITimeRecordingService
         return await _context.TimeRecordings.ToListAsync();
     }
 
-    public async Task<IEnumerable<TimeRecording>> GetByUser(Guid userId)
+    public async Task<IEnumerable<TimeRecording>?> GetByUser(Guid userId)
     {
         return await _context.TimeRecordings.Where(x => x.User.Id == userId).ToListAsync();
     }
