@@ -9,7 +9,7 @@ namespace TimeTracking.Api.Controllers;
 [ApiController]
 public class TimeRecordingController : ControllerBase
 {
-    private ITimeRecordingService _service;
+    private readonly ITimeRecordingService _service;
     
     public TimeRecordingController(ITimeRecordingService service)
     {
@@ -27,7 +27,7 @@ public class TimeRecordingController : ControllerBase
     {
         var result = await _service.GetById(id);
         
-        if (result is null) return NotFound();
+        if (result is null) return NotFound("Time Recording does not exist");
 
         return Ok(result);
     }
@@ -37,7 +37,7 @@ public class TimeRecordingController : ControllerBase
     {
         var result = await _service.GetByUser(id);
 
-        if (result is null) return NotFound();
+        if (result is null) return NotFound("Time Recording does not exist");
 
         return Ok(result);
     }
@@ -47,7 +47,7 @@ public class TimeRecordingController : ControllerBase
     {
         var result = await _service.CreateTimeRecording(recording);
 
-        if (result is null) return Forbid();
+        if (result is null) return Forbid("Time Recording already exists");
 
         return Ok(result);
     }
@@ -57,7 +57,7 @@ public class TimeRecordingController : ControllerBase
     {
         var result = await _service.UpdateTimeRecording(id, timeRecording);
 
-        if (result is null) return NotFound();
+        if (result is null) return NotFound("Time Recording does not exist");
 
         return Ok(result);
     }
@@ -67,7 +67,7 @@ public class TimeRecordingController : ControllerBase
     {
         var result = await _service.DeleteTimeRecording(id);
 
-        if (result is null) return NotFound();
+        if (result is null) return NotFound("Time Recording does not exist");
 
         return Ok(result);
     }
