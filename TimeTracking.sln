@@ -7,15 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeTracking.Domain", "Time
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeTracking.Service", "TimeTracking.Service\TimeTracking.Service.csproj", "{DD43D985-0B98-449D-BE6D-608122892E1A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeTracking.Maui", "TimeTracking.Maui\TimeTracking.Maui.csproj", "{4E7A4E35-5F25-4A8C-8E90-3F959B892763}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeTracking.Test", "TimeTracking.Test\TimeTracking.Test.csproj", "{6B0F85AF-B8B5-47A4-BB07-BE52467E73A4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeTracking.Api", "TimeTracking.Api\TimeTracking.Api.csproj", "{97EC9C76-C084-4FFE-B127-26D855A1B6D8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeTracking.Data", "TimeTracking.Data\TimeTracking.Data.csproj", "{3A84D1D1-6047-4879-9338-44B34405E442}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeTracking.Migrations", "TimeTracking.Migrations\TimeTracking.Migrations.csproj", "{6A7A2746-478A-4BEE-93D6-DB4DF1DA4373}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,12 +27,6 @@ Global
 		{DD43D985-0B98-449D-BE6D-608122892E1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD43D985-0B98-449D-BE6D-608122892E1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD43D985-0B98-449D-BE6D-608122892E1A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4E7A4E35-5F25-4A8C-8E90-3F959B892763}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4E7A4E35-5F25-4A8C-8E90-3F959B892763}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4E7A4E35-5F25-4A8C-8E90-3F959B892763}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{4E7A4E35-5F25-4A8C-8E90-3F959B892763}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4E7A4E35-5F25-4A8C-8E90-3F959B892763}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4E7A4E35-5F25-4A8C-8E90-3F959B892763}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{6B0F85AF-B8B5-47A4-BB07-BE52467E73A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6B0F85AF-B8B5-47A4-BB07-BE52467E73A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B0F85AF-B8B5-47A4-BB07-BE52467E73A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -49,10 +39,6 @@ Global
 		{3A84D1D1-6047-4879-9338-44B34405E442}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A84D1D1-6047-4879-9338-44B34405E442}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A84D1D1-6047-4879-9338-44B34405E442}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6A7A2746-478A-4BEE-93D6-DB4DF1DA4373}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6A7A2746-478A-4BEE-93D6-DB4DF1DA4373}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6A7A2746-478A-4BEE-93D6-DB4DF1DA4373}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6A7A2746-478A-4BEE-93D6-DB4DF1DA4373}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

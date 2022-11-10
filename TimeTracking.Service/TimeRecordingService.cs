@@ -29,18 +29,44 @@ public class TimeRecordingService : ITimeRecordingService
         return await _context.TimeRecordings.Where(x => x.User.Id == userId).ToListAsync();
     }
 
-    public Task<TimeRecording>? CreateTimeRecording(TimeRecording timeRecording)
+    public async Task<TimeRecording?> CreateTimeRecording(TimeRecording timeRecording)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _context.TimeRecordings.AddAsync(timeRecording);
+            await _context.SaveChangesAsync();
+            return timeRecording;
+        }
+        catch
+        {
+            return null;
+        }
     }
 
-    public Task<TimeRecording?> UpdateTimeRecording(Guid id, TimeRecording timeRecording)
+    public async Task<TimeRecording?> UpdateTimeRecording(Guid id, TimeRecording timeRecording)
     {
-        throw new NotImplementedException();
+        var recording = await _context.TimeRecordings.FirstOrDefaultAsync(x=> x.Id == id);
+        
+        if (recording is null) return null;
+
+        recording.StartTime = timeRecording.StartTime;
+        recording.EndTime = timeRecording.EndTime;
+        recording.User = timeRecording.User;
+
+        await _context.SaveChangesAsync();
+        
+        return recording;
     }
 
-    public Task<IEnumerable<TimeRecording>>? DeleteTimeRecording(Guid id)
+    public async Task<IEnumerable<TimeRecording>?> DeleteTimeRecording(Guid id)
     {
-        throw new NotImplementedException();
+        var recording = await _context.TimeRecordings.FirstOrDefaultAsync(x => x.Id == id);
+        
+        if (recording is null) return null;
+
+        _context.TimeRecordings.Remove(recording);
+        await _context.SaveChangesAsync();
+
+        return await _context.TimeRecordings.ToListAsync();
     }
 }

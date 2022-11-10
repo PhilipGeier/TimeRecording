@@ -16,4 +16,5 @@ public class TimeRecording
     }
 
     public User User { get; set; }
+
 }

@@ -17,7 +17,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ITimeRecordingService, TimeRecordingService>();
-builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlite("Data Source=TimeRecording.db",
     sqlOptions => sqlOptions.MigrationsAssembly("TimeTracking.Data")));
@@ -29,6 +28,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.CreateDbIfNotExists();
 }
 
 app.UseHttpsRedirection();
