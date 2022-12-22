@@ -1,15 +1,16 @@
 ﻿using TimeTracking.Domain;
+using TimeTracking.Domain.DataTransferObjects;
 
 namespace TimeTracking.Service.Interfaces;
 
 public interface IUserService
 {
-    Task<User?> GetById(Guid id);
-    Task<User?> GetByEmail(string email);
-    Task<IEnumerable<User>> GetAll();
-    Task<User?> CreateUser(User user);
-    Task<User?> UpdateUser(Guid id, User request);
-    Task<IEnumerable<User>?> DeleteUser(Guid id);
-    Task<User> Login(User user);
-    Task<User> Register(User user);
+    Task<UserDto?> GetById(Guid id);
+    Task<UserDto?> GetByEmail(string email);
+    Task<IEnumerable<UserDto>> GetAll();
+    Task<UserDto?> Register(UserRegisterDto request);
+    Task<UserDto?> UpdateUser(Guid id, UserDto request);
+    Task<IEnumerable<UserDto>?> DeleteUser(Guid id);
+    Task<UserDto?> Login(string email, string password);
+
 }

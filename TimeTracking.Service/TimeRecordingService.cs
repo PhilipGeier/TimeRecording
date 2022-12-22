@@ -43,6 +43,35 @@ public class TimeRecordingService : ITimeRecordingService
         }
     }
 
+    public async Task<TimeRecording?> StartRecording(DateTime startTime)
+    {
+        var timeRecording = new TimeRecording
+        {
+            Id = Guid.NewGuid(),
+            StartTime = startTime,
+            EndTime = null
+        };
+
+        await _context.TimeRecordings.AddAsync(timeRecording);
+        await _context.SaveChangesAsync();
+        return timeRecording;
+    }
+
+    public async Task<TimeRecording?> EndRecording(Guid id, DateTime endTime)
+    {
+        var timeRecording = await _context.TimeRecordings.FirstOrDefaultAsync(x => x.Id == id);
+        if (timeRecording is null)
+            return null;
+
+        if (endTime < timeRecording.StartTime)
+            return null;
+
+        timeRecording.EndTime = endTime;
+
+        await _context.SaveChangesAsync();
+        return timeRecording;
+    }
+
     public async Task<TimeRecording?> UpdateTimeRecording(Guid id, TimeRecording request)
     {
         var recording = await _context.TimeRecordings.FirstOrDefaultAsync(x=> x.Id == id);

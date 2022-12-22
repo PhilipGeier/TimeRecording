@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SQLitePCL;
 using TimeTracking.Domain;
 using TimeTracking.Service.Interfaces;
@@ -17,12 +18,14 @@ public class TimeRecordingController : ControllerBase
     }
     
     [HttpGet]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<TimeRecording>>> GetAll()
     {
         return Ok(await _service.GetAll());
     }
 
     [HttpGet("{id:guid}")]
+    [Authorize]
     public async Task<ActionResult<TimeRecording>> GetById(Guid id)
     {
         var result = await _service.GetById(id);
@@ -33,6 +36,7 @@ public class TimeRecordingController : ControllerBase
     }
 
     [HttpGet("user/{id:guid}")]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<TimeRecording>>> GetByUser(Guid id)
     {
         var result = await _service.GetByUser(id);
@@ -43,6 +47,7 @@ public class TimeRecordingController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult<TimeRecording>> Create(TimeRecording recording)
     {
         var result = await _service.CreateTimeRecording(recording);
@@ -53,6 +58,7 @@ public class TimeRecordingController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
+    [Authorize]
     public async Task<ActionResult<TimeRecording>> Update(Guid id, TimeRecording timeRecording)
     {
         var result = await _service.UpdateTimeRecording(id, timeRecording);
@@ -63,6 +69,7 @@ public class TimeRecordingController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<TimeRecording>>> Delete(Guid id)
     {
         var result = await _service.DeleteTimeRecording(id);
@@ -72,4 +79,32 @@ public class TimeRecordingController : ControllerBase
         return Ok(result);
     }
 
+    [HttpPost("start/")]
+    [Authorize]
+    public async Task<ActionResult<TimeRecording>> StartRecording(DateTime startTime)
+    {
+        var result = await _service.StartRecording(startTime);
+
+        if (result is null)
+            return NotFound("Error while starting recording");
+
+        return result;
+    }
+
+    [HttpPut("end/{id:guid}")]
+    [Authorize]
+    public async Task<ActionResult<TimeRecording>> EndRecording(Guid id, DateTime endTime)
+    {
+        var result = await _service.EndRecording(id, endTime);
+
+        if (result is null)
+            return NotFound("Error");
+
+        return result;
+    }
+    
+    // Bei erstellung/starten eines TimeRecordings => Exception
+    // Grund: kein Plan wer der User ist
+    // Fix: Token für authentifizierung von user. JWT -> wird per POST bei request mitgegeben
+    //      Server überprüft Token und gibt die Notwendigen UserInfos weiter
 }

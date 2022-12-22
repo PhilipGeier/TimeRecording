@@ -1,37 +1,26 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 using TimeTracking.Domain.DataTransferObjects;
+using TimeTracking.Domain.Enums;
 
 namespace TimeTracking.Domain;
 
 public class User
 {
-    public Guid Id { get; set; }
-    
-    [Required]
-    public string FirstName { get; set; }
-    
-    [Required]
-    public string LastName { get; set; }
-    
-    [Required]
-    public string PhoneNumber { get; set; }
-    
-    [Required]
-    public string Email { get; set; }
-    
-    [Required]
-    public string Password { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
 
-    public UserDto ToUserDto()
-    {
-        return new UserDto
-        {
-            Id = Id,
-            Email = Email,
-            FirstName = FirstName,
-            LastName = LastName,
-            PhoneNumber = PhoneNumber
-        };
-    }
+    public string FirstName { get; set; }
+
+    public string LastName { get; set; }
+
+    public string PhoneNumber { get; set; }
+ 
+    public string Email { get; set; }
+
+    public string Password { get; set; }
+    
+
+    public UserRole Role { get; set; } = UserRole.Standard;
+
 }
