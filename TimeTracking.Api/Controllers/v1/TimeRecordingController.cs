@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SQLitePCL;
 using TimeTracking.Domain;
 using TimeTracking.Service.Interfaces;
 
-namespace TimeTracking.Api.Controllers;
+namespace TimeTracking.Api.Controllers.v1;
 
 [Route("/api/[controller]")]
 [ApiController]

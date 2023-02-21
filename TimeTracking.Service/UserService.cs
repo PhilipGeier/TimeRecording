@@ -87,7 +87,7 @@ public class UserService : IUserService
         return userDto; 
     }
 
-    public async Task<IEnumerable<UserDto>?> DeleteUser(Guid id)
+    public async Task<List<UserDto>?> DeleteUser(Guid id)
     {
         var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -97,7 +97,7 @@ public class UserService : IUserService
         await _context.SaveChangesAsync();
 
         var users = _context.Users.ToListAsync();
-        var userDtos = _mapper.Map<IEnumerable<UserDto>>(users);
+        var userDtos = _mapper.Map<List<UserDto>>(users);
 
         return userDtos;
     }
@@ -118,6 +118,4 @@ public class UserService : IUserService
         var userDto = _mapper.Map<UserDto>(user);
         return userDto;
     }
-    
-    
 }

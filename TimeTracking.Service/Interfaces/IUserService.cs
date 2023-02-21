@@ -10,7 +10,7 @@ public interface IUserService
     Task<IEnumerable<UserDto>> GetAll();
     Task<UserDto?> Register(UserRegisterDto request);
     Task<UserDto?> UpdateUser(Guid id, UserDto request);
-    Task<IEnumerable<UserDto>?> DeleteUser(Guid id);
+    Task<List<UserDto>?> DeleteUser(Guid id);
     Task<UserDto?> Login(string email, string password);
 
 }

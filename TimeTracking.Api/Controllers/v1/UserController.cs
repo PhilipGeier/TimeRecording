@@ -1,17 +1,15 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using TimeTracking.Domain;
 using TimeTracking.Domain.Attributes;
 using TimeTracking.Domain.DataTransferObjects;
 using TimeTracking.Domain.Enums;
 using TimeTracking.Service.Interfaces;
 
-namespace TimeTracking.Api.Controllers;
+namespace TimeTracking.Api.Controllers.v1;
 
 [Route("/api/[controller]")]
 [ApiController]
@@ -27,14 +25,14 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "Admin, SuperAdmin")]
+    [Authorize(Roles = "Admin,SuperAdmin")]
     public async Task<ActionResult<IEnumerable<UserDto>>> GetAll()
     {
         return Ok(await _service.GetAll());
     }
 
     [HttpGet("{id:guid}")]
-    [AllowAnonymous]
+    [Authorize]
     public async Task<ActionResult<UserDto>> GetById(Guid id)
     {
         var result = await _service.GetById(id);
@@ -45,6 +43,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{email}")]
+    [Authorize]
     public async Task<ActionResult<UserDto>> GetByEmail(string email)
     {
         var result = await _service.GetByEmail(email);
@@ -55,7 +54,7 @@ public class UserController : ControllerBase
     }
 
     [AllowAnonymous]
-    [HttpPost]
+    [HttpPost("register")]
     public async Task<ActionResult> Register(UserRegisterDto user)
     {
         var userDto = await _service.Register(user);
@@ -63,13 +62,28 @@ public class UserController : ControllerBase
         if (userDto is null) 
             return StatusCode(409, "User already exists");
 
-        return Ok();
+        return Ok(userDto);
     }
 
     [Authorize]
     [HttpPut("{id:guid}")]
     public async Task<ActionResult<UserDto>> Update(Guid id, UserDto user)
-    {
+    {        
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+        if (identity is null)
+            return null;
+
+        var userClaims = identity.Claims;
+
+        var isIdGuid = Guid.TryParse(userClaims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value, out var userId);
+        
+        if (!isIdGuid)
+            return BadRequest("The id is not a Guid");
+
+        if (!userId.Equals(id))
+            return Unauthorized("You are not authorized to do this");
+        
         var result = await _service.UpdateUser(id, user);
 
         if (result is null) return NotFound("User does not exist");
@@ -116,7 +130,9 @@ public class UserController : ControllerBase
         return Ok(new JwtSecurityTokenHandler().WriteToken(token));
     }
 
-    private UserDto? GetCurrentUser()
+    [Authorize]
+    [HttpGet("current")]
+    public async Task<ActionResult<UserDto?>> GetCurrentUser()
     {
         var identity = HttpContext.User.Identity as ClaimsIdentity;
 
@@ -126,19 +142,15 @@ public class UserController : ControllerBase
         var userClaims = identity.Claims;
 
         var isIdGuid = Guid.TryParse(userClaims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value, out var id);
-        var isRole = Enum.TryParse<UserRole>(userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value, out var role);
-
-        if (!isRole || !isIdGuid)
-            return null;
         
-        return new UserDto
-        {
-            Id = id,
-            Role = role,
-            Email = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value,
-            FirstName = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.GivenName)?.Value,
-            LastName = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Surname)?.Value,
-            PhoneNumber = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.HomePhone)?.Value
-        };
+        if (!isIdGuid)
+            return BadRequest("The id is not a Guid");
+
+        var user = await _service.GetById(id);
+
+        if (user is null)
+            return NotFound("User does not exist");
+
+        return Ok(user);
     }
 }
